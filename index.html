@@ -6,279 +6,172 @@
   <title>EMS Eldorado – Rooster</title>
 
   <style>
-    html, body{
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      background: transparent;
-    }
-    body{
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-    @media (min-width: 720px){ body{ padding: 18px; } }
+    html, body{height:100%;width:100%;margin:0;padding:0;background:transparent;}
+    body{display:flex;align-items:stretch;justify-content:center;box-sizing:border-box;}
+    @media (min-width:720px){body{padding:18px;}}
 
     .ems-card{
-      --card: #0f1318; --text:#e8edf2; --muted:#aab6c2;
-      --line: rgba(255,255,255,.10); --line-strong: rgba(255,255,255,.18);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --header-grad: linear-gradient(180deg, rgba(255,255,255,.03), transparent);
-      --thead:#0f141b; --hover: rgba(255,255,255,.03);
-      --input-bg: rgba(255,255,255,.04); --input-border: rgba(255,255,255,.14);
-      --btn-bg: rgba(255,255,255,.06); --btn-border: rgba(255,255,255,.14);
-      --danger: rgba(255,90,90,.35);
-      --ok: rgba(110,255,185,.35);
+      --card:#0f1318;--text:#e8edf2;--muted:#aab6c2;
+      --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.18);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --header-grad:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+      --thead:#0f141b;--hover:rgba(255,255,255,.03);
+      --input-bg:rgba(255,255,255,.04);--input-border:rgba(255,255,255,.14);
+      --btn-bg:rgba(255,255,255,.06);--btn-border:rgba(255,255,255,.14);
+      --danger:rgba(255,90,90,.35);--ok:rgba(110,255,185,.35);
 
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-
-      width: min(1100px, 100%);
-      height: 100svh;
-      max-height: 100svh;
-
-      display: flex;
-      flex-direction: column;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--card);color:var(--text);
+      border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+      overflow:hidden;width:min(1100px,100%);
+      height:100svh;max-height:100svh;
+      display:flex;flex-direction:column;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     }
-    @media (min-width: 720px){
-      .ems-card{ height: calc(100svh - 36px); max-height: calc(100svh - 36px); }
-    }
+    @media (min-width:720px){.ems-card{height:calc(100svh - 36px);max-height:calc(100svh - 36px);}}
 
     .ems-card[data-theme="light"]{
-      --card:#fff; --text:#111827; --muted:#5b6472;
-      --line: rgba(17,24,39,.10); --line-strong: rgba(17,24,39,.16);
-      --shadow: 0 10px 30px rgba(17,24,39,.10);
-      --header-grad: linear-gradient(180deg, rgba(17,24,39,.03), transparent);
-      --thead:#f4f6fa; --hover: rgba(17,24,39,.03);
-      --input-bg: rgba(17,24,39,.03); --input-border: rgba(17,24,39,.14);
-      --btn-bg: rgba(17,24,39,.05); --btn-border: rgba(17,24,39,.14);
-      --danger: rgba(255,90,90,.35);
-      --ok: rgba(34,197,94,.35);
+      --card:#fff;--text:#111827;--muted:#5b6472;
+      --line:rgba(17,24,39,.10);--line-strong:rgba(17,24,39,.16);
+      --shadow:0 10px 30px rgba(17,24,39,.10);
+      --header-grad:linear-gradient(180deg, rgba(17,24,39,.03), transparent);
+      --thead:#f4f6fa;--hover:rgba(17,24,39,.03);
+      --input-bg:rgba(17,24,39,.03);--input-border:rgba(17,24,39,.14);
+      --btn-bg:rgba(17,24,39,.05);--btn-border:rgba(17,24,39,.14);
+      --danger:rgba(255,90,90,.35);--ok:rgba(34,197,94,.35);
     }
     @media (prefers-color-scheme: light){
       .ems-card[data-theme="auto"]{
-        --card:#fff; --text:#111827; --muted:#5b6472;
-        --line: rgba(17,24,39,.10); --line-strong: rgba(17,24,39,.16);
-        --shadow: 0 10px 30px rgba(17,24,39,.10);
-        --header-grad: linear-gradient(180deg, rgba(17,24,39,.03), transparent);
-        --thead:#f4f6fa; --hover: rgba(17,24,39,.03);
-        --input-bg: rgba(17,24,39,.03); --input-border: rgba(17,24,39,.14);
-        --btn-bg: rgba(17,24,39,.05); --btn-border: rgba(17,24,39,.14);
-        --danger: rgba(255,90,90,.35);
-        --ok: rgba(34,197,94,.35);
+        --card:#fff;--text:#111827;--muted:#5b6472;
+        --line:rgba(17,24,39,.10);--line-strong:rgba(17,24,39,.16);
+        --shadow:0 10px 30px rgba(17,24,39,.10);
+        --header-grad:linear-gradient(180deg, rgba(17,24,39,.03), transparent);
+        --thead:#f4f6fa;--hover:rgba(17,24,39,.03);
+        --input-bg:rgba(17,24,39,.03);--input-border:rgba(17,24,39,.14);
+        --btn-bg:rgba(17,24,39,.05);--btn-border:rgba(17,24,39,.14);
+        --danger:rgba(255,90,90,.35);--ok:rgba(34,197,94,.35);
       }
     }
 
-    .ems-card__header{
-      padding: 18px;
-      border-bottom: 1px solid var(--line);
-      background: var(--header-grad);
-      flex: 0 0 auto;
-    }
-    .ems-header__top{
-      display:flex; gap:14px;
-      justify-content:space-between; align-items:flex-start;
-      flex-wrap:wrap;
-    }
-    .ems-card__title{ margin:0; font-size:18px; letter-spacing:.2px; }
-    .ems-card__subtitle{ margin:6px 0 0; font-size:13px; color:var(--muted); }
+    .ems-card__header{padding:18px;border-bottom:1px solid var(--line);background:var(--header-grad);flex:0 0 auto;}
+    .ems-header__top{display:flex;gap:14px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;}
+    .ems-card__title{margin:0;font-size:18px;letter-spacing:.2px;}
+    .ems-card__subtitle{margin:6px 0 0;font-size:13px;color:var(--muted);}
 
-    .ems-controls{
-      margin-top:14px;
-      display:grid; gap:12px;
-      grid-template-columns: 1fr 260px auto;
-      align-items:end;
-    }
-    .ems-control{ min-width:0; }
-    .ems-control--right{ display:flex; justify-content:flex-end; }
+    .ems-controls{margin-top:14px;display:grid;gap:12px;grid-template-columns:1fr 260px auto;align-items:end;}
+    .ems-control{min-width:0;}
+    .ems-control--right{display:flex;justify-content:flex-end;}
 
-    .ems-label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
-    .ems-input, .ems-select{
-      width:100%;
-      background: var(--input-bg);
-      color: var(--text);
-      border:1px solid var(--input-border);
-      border-radius:10px;
-      padding:10px 12px;
-      outline:none;
-      box-sizing: border-box;
+    .ems-label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px;}
+    .ems-input,.ems-select{
+      width:100%;background:var(--input-bg);color:var(--text);
+      border:1px solid var(--input-border);border-radius:10px;padding:10px 12px;outline:none;box-sizing:border-box;
     }
-    .ems-input::placeholder{ color:var(--muted); opacity:.85; }
-    .ems-input:focus, .ems-select:focus{
-      border-color: var(--line-strong);
-      box-shadow: 0 0 0 3px rgba(120, 210, 255, .15);
-    }
+    .ems-input::placeholder{color:var(--muted);opacity:.85;}
+    .ems-input:focus,.ems-select:focus{border-color:var(--line-strong);box-shadow:0 0 0 3px rgba(120,210,255,.15);}
 
     .ems-btn{
-      background: var(--btn-bg);
-      color: var(--text);
-      border:1px solid var(--btn-border);
-      border-radius:10px;
-      padding:10px 14px;
-      cursor:pointer;
-      white-space:nowrap;
+      background:var(--btn-bg);color:var(--text);
+      border:1px solid var(--btn-border);border-radius:10px;padding:10px 14px;cursor:pointer;white-space:nowrap;
     }
-    .ems-btn:hover{ filter: brightness(1.05); }
-    .ems-btn--primary{ border-color: var(--ok); min-width: 120px; }
-    .ems-btn--danger{ border-color: var(--danger); }
+    .ems-btn:hover{filter:brightness(1.05);}
+    .ems-btn--primary{border-color:var(--ok);min-width:120px;}
+    .ems-btn--danger{border-color:var(--danger);}
+    .ems-btn--small{padding:8px 10px;font-size:12px;border-radius:9px;}
+    .ems-actions{display:flex;gap:8px;flex-wrap:wrap;}
 
-    .ems-meta{
-      margin-top:10px;
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-      font-size:12px; color: var(--muted);
-    }
-    .ems-pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border:1px solid var(--input-border);
-      background: var(--input-bg);
-      color: var(--muted);
-    }
+    .ems-meta{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);}
+    .ems-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid var(--input-border);background:var(--input-bg);color:var(--muted);}
 
-    .ems-theme{ display:flex; flex-direction:column; gap:6px; min-width: 160px; }
-    .ems-theme__label{ font-size:12px; color:var(--muted); }
+    .ems-theme{display:flex;flex-direction:column;gap:6px;min-width:160px;}
+    .ems-theme__label{font-size:12px;color:var(--muted);}
 
     /* Admin */
-    .ems-admin{
-      margin-top:12px;
-      display:flex;
-      gap:8px;
-      align-items:center;
-      max-width: 720px;
-      flex-wrap: wrap;
-    }
-    .ems-admin .ems-input{ flex: 1 1 220px; }
-    .ems-admin .ems-btn{ flex: 0 0 auto; }
+    .ems-admin{margin-top:12px;display:flex;gap:8px;align-items:center;max-width:720px;flex-wrap:wrap;}
+    .ems-admin .ems-input{flex:1 1 220px;}
+    .ems-admin .ems-btn{flex:0 0 auto;}
 
-    /* Read-only default */
-    body:not(.is-admin) .ems-admin{ display:none; }
-    body:not(.is-admin) .ems-form{ display:none; }
-    body:not(.is-admin) .col-actions{ display:none; }
-    body:not(.is-admin) th.col-actions{ display:none; }
+    /* Read-only default: hide admin + add form + actions column */
+    body:not(.is-admin) .ems-admin{display:none;}
+    body:not(.is-admin) .ems-form{display:none;}
+    body:not(.is-admin) .col-actions{display:none;}
+    body:not(.is-admin) th.col-actions{display:none;}
 
-    /* Add form (collapsed) */
-    .ems-form{ margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+    /* Add form collapsed */
+    .ems-form{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
     .ems-form__toggle{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      font-size:13px;
-      border-radius:999px;
-      border:1px solid var(--input-border);
-      background: var(--input-bg);
-      color: var(--text);
-      cursor:pointer;
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;font-size:13px;border-radius:999px;
+      border:1px solid var(--input-border);background:var(--input-bg);color:var(--text);cursor:pointer;
     }
-    .ems-form__toggle:hover{ filter: brightness(1.05); }
-    .ems-form__title{ margin:12px 0 10px; font-size: 14px; color: var(--text); }
+    .ems-form__toggle:hover{filter:brightness(1.05);}
+    .ems-form__title{margin:12px 0 10px;font-size:14px;color:var(--text);}
 
-    .ems-form__grid{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:end;
-    }
-    .ems-form__grid .ems-control{ flex: 1 1 220px; }
-    .ems-form__grid .ems-control:first-child{ flex: 0 1 160px; min-width: 140px; }
-    .ems-form__grid .ems-control:nth-child(3){ flex: 1 1 240px; min-width: 200px; }
-    .ems-form__grid .ems-control--right{ flex: 0 0 auto; }
+    .ems-form__grid{display:flex;flex-wrap:wrap;gap:12px;align-items:end;}
+    .ems-form__grid .ems-control{flex:1 1 220px;}
+    .ems-form__grid .ems-control:first-child{flex:0 1 160px;min-width:140px;}
+    .ems-form__grid .ems-control:nth-child(3){flex:1 1 240px;min-width:200px;}
+    .ems-form__grid .ems-control--right{flex:0 0 auto;}
 
-    .ems-hint{ flex: 1 1 100%; margin: 0; font-size: 12px; color: var(--muted); }
-    .ems-hint--error{ color: rgba(255,90,90,.9); }
-    .ems-hint--ok{ color: rgba(110,255,185,.9); }
+    .ems-hint{flex:1 1 100%;margin:0;font-size:12px;color:var(--muted);}
+    .ems-hint--error{color:rgba(255,90,90,.9);}
+    .ems-hint--ok{color:rgba(110,255,185,.9);}
 
     /* Table */
-    .ems-table-wrap{
-      flex: 1 1 auto;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      min-height: 180px;
-    }
-    .ems-table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      min-width: 920px;
-    }
+    .ems-table-wrap{flex:1 1 auto;overflow:auto;-webkit-overflow-scrolling:touch;min-height:180px;}
+    .ems-table{width:100%;border-collapse:separate;border-spacing:0;min-width:920px;}
     .ems-table thead th{
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background: var(--thead);
-      color: var(--muted);
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: .08em;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--line-strong);
-      text-align: left;
-      white-space: nowrap;
+      position:sticky;top:0;z-index:2;background:var(--thead);color:var(--muted);
+      text-transform:uppercase;font-size:11px;letter-spacing:.08em;padding:12px 14px;border-bottom:1px solid var(--line-strong);
+      text-align:left;white-space:nowrap;
     }
-    .ems-table tbody td{
-      padding:12px 14px;
-      border-bottom:1px solid var(--line);
-      vertical-align:middle;
-    }
-    .ems-table tbody tr:hover{ background: var(--hover); }
+    .ems-table tbody td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle;}
+    .ems-table tbody tr:hover{background:var(--hover);}
 
-    .col-num{ width:110px; }
-    .col-actions{ width:120px; }
-    .num{ font-variant-numeric: tabular-nums; opacity:.95; }
+    .col-num{width:110px;}
+    .col-actions{width:180px;}
+    .num{font-variant-numeric:tabular-nums;opacity:.95;}
 
-    .badge{
-      display:inline-flex;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      border:1px solid var(--input-border);
-      background: var(--input-bg);
-      white-space:nowrap;
-    }
-    .pill{
-      display:inline-flex;
-      padding:6px 10px;
-      border-radius:10px;
-      font-size:12px;
-      border:1px solid var(--input-border);
-      background: var(--input-bg);
-    }
+    .badge{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid var(--input-border);background:var(--input-bg);white-space:nowrap;}
+    .pill{display:inline-flex;padding:6px 10px;border-radius:10px;font-size:12px;border:1px solid var(--input-border);background:var(--input-bg);}
 
-    .badge--ChiefofEMS    { border-color: rgba(255, 90, 90, .45); }
-    .badge--DeputyChief   { border-color: rgba(255, 170, 70, .45); }
-    .badge--Captain       { border-color: rgba(255, 230, 80, .45); }
-    .badge--Lieutenant    { border-color: rgba(120, 210, 255, .45); }
-    .badge--Paramedic     { border-color: rgba(110, 255, 185, .45); }
-    .badge--AdvancedEMT   { border-color: rgba(190, 170, 255, .45); }
-    .badge--EMT           { border-color: rgba(140, 160, 190, .45); }
-    .badge--Trainee       { border-color: rgba(180, 180, 180, .35); }
+    .badge--ChiefofEMS{border-color:rgba(255,90,90,.45);}
+    .badge--DeputyChief{border-color:rgba(255,170,70,.45);}
+    .badge--Captain{border-color:rgba(255,230,80,.45);}
+    .badge--Lieutenant{border-color:rgba(120,210,255,.45);}
+    .badge--Paramedic{border-color:rgba(110,255,185,.45);}
+    .badge--AdvancedEMT{border-color:rgba(190,170,255,.45);}
+    .badge--EMT{border-color:rgba(140,160,190,.45);}
+    .badge--Trainee{border-color:rgba(180,180,180,.35);}
 
-    .ems-loading,
-    .ems-empty{
-      flex: 0 0 auto;
-      padding: 14px 18px;
-      color: var(--muted);
-      font-size: 13px;
-      border-top: 1px solid var(--line);
-    }
+    .ems-loading,.ems-empty{flex:0 0 auto;padding:14px 18px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);}
 
-    @media (max-width: 980px){
-      .ems-controls{ grid-template-columns: 1fr 1fr; }
-      .ems-control--right{ grid-column: 1 / -1; justify-content:flex-start; }
-      .ems-table{ min-width: 820px; }
+    /* Simple modal */
+    .ems-modal-backdrop{
+      position:fixed;inset:0;background:rgba(0,0,0,.55);
+      display:none;align-items:center;justify-content:center;padding:18px;z-index:9999;
     }
-    @media (max-width: 520px){
-      .ems-controls{ grid-template-columns: 1fr; }
-      .ems-theme{ min-width: 0; width: 100%; }
-      .ems-table{ min-width: 760px; }
+    body.is-admin .ems-modal-backdrop.show{display:flex;}
+    .ems-modal{
+      width:min(560px,100%);
+      background:var(--card);color:var(--text);
+      border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;
+    }
+    .ems-modal__head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .ems-modal__title{margin:0;font-size:14px;}
+    .ems-modal__body{padding:16px;display:flex;flex-wrap:wrap;gap:12px;}
+    .ems-modal__body .ems-control{flex:1 1 240px;}
+    .ems-modal__foot{padding:14px 16px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+    .ems-x{border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:6px;}
+    .ems-x:hover{color:var(--text);}
+
+    @media (max-width:980px){
+      .ems-controls{grid-template-columns:1fr 1fr;}
+      .ems-control--right{grid-column:1 / -1;justify-content:flex-start;}
+      .ems-table{min-width:820px;}
+    }
+    @media (max-width:520px){
+      .ems-controls{grid-template-columns:1fr;}
+      .ems-theme{min-width:0;width:100%;}
+      .ems-table{min-width:760px;}
     }
   </style>
 </head>
@@ -302,7 +195,6 @@
         </div>
       </div>
 
-      <!-- Admin (hidden for read-only) -->
       <div class="ems-admin">
         <input id="emsAdminKey" class="ems-input" placeholder="Admin key" />
         <input id="emsAdminActor" class="ems-input" placeholder="Jouw naam (logging)" />
@@ -334,7 +226,6 @@
         <span class="ems-pill" id="emsMode">Modus: read-only</span>
       </div>
 
-      <!-- Add form (admin-only, collapsed) -->
       <div class="ems-form">
         <button id="emsToggleForm" class="ems-form__toggle" type="button">➕ Personeel toevoegen</button>
 
@@ -401,6 +292,47 @@
     <div class="ems-empty" id="emsEmpty" hidden>Geen resultaten.</div>
   </section>
 
+  <!-- Edit modal (admin only) -->
+  <div class="ems-modal-backdrop" id="emsModalBackdrop" aria-hidden="true">
+    <div class="ems-modal" role="dialog" aria-modal="true" aria-labelledby="emsModalTitle">
+      <div class="ems-modal__head">
+        <h3 class="ems-modal__title" id="emsModalTitle">Record bewerken</h3>
+        <button class="ems-x" id="emsModalClose" type="button" aria-label="Sluiten">×</button>
+      </div>
+      <div class="ems-modal__body">
+        <div class="ems-control">
+          <label class="ems-label" for="mCallsign">Roepnummer (readonly)</label>
+          <input id="mCallsign" class="ems-input" readonly />
+        </div>
+        <div class="ems-control">
+          <label class="ems-label" for="mName">Naam</label>
+          <input id="mName" class="ems-input" />
+        </div>
+        <div class="ems-control">
+          <label class="ems-label" for="mRole">Functie</label>
+          <select id="mRole" class="ems-select">
+            <option>Chief of EMS</option>
+            <option>Deputy Chief</option>
+            <option>Captain</option>
+            <option>Lieutenant</option>
+            <option>Paramedic</option>
+            <option>Advanced EMT</option>
+            <option>EMT</option>
+            <option>Trainee</option>
+          </select>
+        </div>
+        <div class="ems-control">
+          <label class="ems-label" for="mSpec">Specialisatie</label>
+          <input id="mSpec" class="ems-input" />
+        </div>
+      </div>
+      <div class="ems-modal__foot">
+        <button class="ems-btn" id="emsModalCancel" type="button">Annuleren</button>
+        <button class="ems-btn ems-btn--primary" id="emsModalSave" type="button">Opslaan</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     (function () {
       /* =========================
@@ -408,13 +340,12 @@
          ========================= */
       const API_URL = "https://script.google.com/macros/s/AKfycbxMnY2Mt3N1azKmrbNeu41c1cKOnYfyGzXaEH6Jn58plT1ajubxrb06ZZNCh6g17y5rjA/exec";
 
-      /* Simple admin key mode (front-end). For stronger security: validate server-side. */
+      // Front-end admin key. For real security: validate on server-side too.
       const ADMIN_KEY = "EMS-CHIEF-2026";
+      const ADMIN_SECRET = "CHANGE_ME_TO_A_LONG_RANDOM_SECRET";
 
-      /* Auto admin via URL: ?admin=KEY
-         Optional: ?actor=Naam (wordt opgeslagen voor logging)
-         Na activatie wordt ?admin uit de URL verwijderd (history.replaceState).
-      */
+
+      // Auto admin: ?admin=KEY&actor=Naam (actor saved for logging)
       const ADMIN_QUERY_PARAM = "admin";
       const ADMIN_ACTOR_QUERY_PARAM = "actor";
       const ADMIN_STORAGE_KEY = "ems-admin";
@@ -456,8 +387,19 @@
       const fRole = document.getElementById("fRole");
       const fSpec = document.getElementById("fSpec");
 
+      // Modal refs
+      const modalBackdrop = document.getElementById("emsModalBackdrop");
+      const modalClose = document.getElementById("emsModalClose");
+      const modalCancel = document.getElementById("emsModalCancel");
+      const modalSave = document.getElementById("emsModalSave");
+      const mCallsign = document.getElementById("mCallsign");
+      const mName = document.getElementById("mName");
+      const mRole = document.getElementById("mRole");
+      const mSpec = document.getElementById("mSpec");
+
       let staff = [];
       let isAdmin = false;
+      let editingCallsign = null;
 
       function setStatus(text){ statusEl.textContent = "Status: " + (text || "klaar"); }
       function setMode(){ modeEl.textContent = "Modus: " + (isAdmin ? "beheer" : "read-only"); }
@@ -491,12 +433,12 @@
       function updateAdminUI(){
         document.body.classList.toggle("is-admin", isAdmin);
         setMode();
-        // keep the admin actor input in sync
         if (adminActorInput) adminActorInput.value = getActor();
 
         if (!isAdmin) {
           formWrap.setAttribute("hidden","");
           toggleBtn.textContent = "➕ Personeel toevoegen";
+          closeModal();
         }
       }
 
@@ -546,10 +488,20 @@
         const sorted = [...staff].sort((a,b)=>(Number(a.callsign)||0)-(Number(b.callsign)||0));
 
         sorted.forEach(person=>{
-          const tr = document.createElement("tr");
           const specHtml = (person.specialization && String(person.specialization).trim().length)
             ? `<span class="pill">${escapeHtml(person.specialization)}</span>` : "-";
 
+          // Actions: only shown when admin (CSS hides col in read-only)
+          const actionsHtml = `
+            <div class="ems-actions">
+              <button type="button" class="ems-btn ems-btn--small"
+                data-action="edit" data-callsign="${escapeHtml(person.callsign)}">Bewerk</button>
+              <button type="button" class="ems-btn ems-btn--small ems-btn--danger"
+                data-action="delete" data-callsign="${escapeHtml(person.callsign)}">Verwijder</button>
+            </div>
+          `;
+
+          const tr = document.createElement("tr");
           tr.innerHTML = `
             <td class="num">${escapeHtml(person.callsign)}</td>
             <td>${escapeHtml(person.name)}</td>
@@ -557,12 +509,8 @@
               <span class="badge badge--${roleClass(person.role)}">${escapeHtml(person.role)}</span>
             </td>
             <td>${specHtml}</td>
-            <td class="col-actions">
-              <button type="button" class="ems-btn ems-btn--danger"
-                data-action="delete" data-callsign="${escapeHtml(person.callsign)}">
-                Verwijder
-              </button>
-            </td>`;
+            <td class="col-actions">${actionsHtml}</td>
+          `;
           tbody.appendChild(tr);
         });
 
@@ -614,7 +562,7 @@
       }
 
       async function apiAdd(person){
-        const payload = { ...person, actor: getActor() };
+        const payload = { ...person, actor: getActor(), admin_secret: ADMIN_SECRET };
         const res = await fetch(API_URL, {
           method:"POST",
           headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
@@ -624,8 +572,9 @@
         return await res.json().catch(()=>({success:true}));
       }
 
+
       async function apiDelete(callsign){
-        const payload = { action:"delete", callsign, actor: getActor() };
+        const payload = { action:"delete", callsign, actor: getActor(), admin_secret: ADMIN_SECRET };
         const res = await fetch(API_URL, {
           method:"POST",
           headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
@@ -634,6 +583,20 @@
         if (!res.ok) throw new Error("API POST (delete) faalde: " + res.status);
         return await res.json().catch(()=>({success:true}));
       }
+
+
+      // Update via POST (action=update)
+      async function apiUpdate(payload){
+        const body = toFormBody({ action:"update", ...payload, actor: getActor(), admin_secret: ADMIN_SECRET });
+        const res = await fetch(API_URL, {
+          method:"POST",
+          headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+          body
+        });
+        if (!res.ok) throw new Error("API POST (update) faalde: " + res.status);
+        return await res.json().catch(()=>({success:true}));
+      }
+
 
       async function refresh(){
         setHint("");
@@ -692,7 +655,6 @@
           setStatus("toevoegen…");
           const r = await apiAdd({ callsign, name, role, specialization });
           if (r && r.success === false) throw new Error(r.error || "Server error");
-
           setHint(`Toegevoegd: ${String(name).trim()} (${Number(callsign)})`, "ok");
           form.reset();
           fCallsign.focus();
@@ -706,17 +668,10 @@
         }
       }
 
-      async function handleDeleteClick(e){
-        const btn = e.target.closest("button[data-action='delete']");
-        if (!btn) return;
+      async function handleDelete(callsign, name){
         if (!isAdmin) return;
-
         const actor = (getActor() || "").trim();
         if (!actor) { setHint("Vul je naam in voor logging (admin).", "error"); return; }
-
-        const callsign = btn.getAttribute("data-callsign");
-        const row = btn.closest("tr");
-        const name = row ? row.children[1]?.innerText : "";
 
         const ok = confirm(`Verwijderen: ${name} (${callsign})?\n\nDit zet 'active' op FALSE in de Sheet en logt de actie.`);
         if (!ok) return;
@@ -725,7 +680,6 @@
           setStatus("verwijderen…");
           const r = await apiDelete(callsign);
           if (r && r.success === false) throw new Error(r.error || "Server error");
-
           setHint(`Verwijderd: ${name} (${callsign})`, "ok");
           await refresh();
         } catch(err){
@@ -737,7 +691,79 @@
         }
       }
 
-      /* Toggle add form */
+      function openModalFor(callsign){
+        if (!isAdmin) return;
+        const actor = (getActor() || "").trim();
+        if (!actor) { setHint("Vul je naam in voor logging (admin).", "error"); return; }
+
+        const person = staff.find(p => Number(p.callsign) === Number(callsign));
+        if (!person) { setHint("Record niet gevonden.", "error"); return; }
+
+        editingCallsign = Number(callsign);
+        mCallsign.value = String(person.callsign);
+        mName.value = String(person.name || "");
+        mRole.value = String(person.role || "EMT");
+        mSpec.value = String(person.specialization || "");
+
+        modalBackdrop.classList.add("show");
+        modalBackdrop.setAttribute("aria-hidden", "false");
+        mName.focus();
+      }
+
+      function closeModal(){
+        modalBackdrop.classList.remove("show");
+        modalBackdrop.setAttribute("aria-hidden", "true");
+        editingCallsign = null;
+      }
+
+      async function saveModal(){
+        if (!isAdmin || editingCallsign == null) return;
+        const actor = (getActor() || "").trim();
+        if (!actor) { setHint("Vul je naam in voor logging (admin).", "error"); return; }
+
+        const name = (mName.value || "").trim();
+        const role = (mRole.value || "").trim();
+        const specialization = (mSpec.value || "").trim();
+
+        if (!name) { alert("Naam is verplicht."); return; }
+        if (!role) { alert("Functie is verplicht."); return; }
+
+        try{
+          setStatus("opslaan…");
+          const r = await apiUpdate({
+            callsign: editingCallsign,
+            name,
+            role,
+            specialization
+          });
+          if (r && r.success === false) throw new Error(r.error || "Server error");
+          setHint(`Bijgewerkt: ${name} (${editingCallsign})`, "ok");
+          closeModal();
+          await refresh();
+        } catch(err){
+          console.error(err);
+          setStatus("fout");
+          alert("Opslaan mislukt. Check Apps Script update-actie.");
+        } finally {
+          setStatus("klaar");
+        }
+      }
+
+      function handleTableClick(e){
+        const btn = e.target.closest("button[data-action]");
+        if (!btn) return;
+
+        const action = btn.getAttribute("data-action");
+        const callsign = btn.getAttribute("data-callsign");
+
+        const row = btn.closest("tr");
+        const name = row ? row.children[1]?.innerText : "";
+
+        if (!isAdmin) return; // rights: only admin can edit/delete
+        if (action === "delete") handleDelete(callsign, name);
+        if (action === "edit") openModalFor(callsign);
+      }
+
       function initToggle(){
         toggleBtn.addEventListener("click", () => {
           const open = !formWrap.hasAttribute("hidden");
@@ -752,23 +778,15 @@
         });
       }
 
-      /* Admin activation */
       function initAdmin(){
-        // Fill actor from storage
         adminActorInput.value = getActor();
-
-        // Auto from query (?admin=KEY&actor=Name)
         tryAutoAdminFromQuery();
-
-        // Or from localStorage flag
         if (!isAdmin && tryAdminFromStorage()) isAdmin = true;
-
         updateAdminUI();
 
         adminBtn.addEventListener("click", () => {
           const key = (adminKeyInput.value || "").trim();
           const actor = (adminActorInput.value || "").trim();
-
           if (!actor) { alert("Vul je naam in voor logging."); return; }
 
           if (key === ADMIN_KEY) {
@@ -782,12 +800,10 @@
           }
         });
 
-        // Persist actor changes even after activation (nice UX)
         adminActorInput.addEventListener("change", () => setActor((adminActorInput.value || "").trim()));
         adminActorInput.addEventListener("blur", () => setActor((adminActorInput.value || "").trim()));
       }
 
-      /* Theme */
       function setTheme(value){
         root.setAttribute("data-theme", value);
         try { localStorage.setItem(THEME_KEY, value); } catch(e){}
@@ -799,20 +815,35 @@
         root.setAttribute("data-theme", saved);
       }
 
-      /* Events */
       searchEl.addEventListener("input", applyFilters);
       roleEl.addEventListener("change", applyFilters);
       clearBtn.addEventListener("click", resetAll);
       themeSelect.addEventListener("change", () => setTheme(themeSelect.value));
 
       form.addEventListener("submit", handleAdd);
-      tbody.addEventListener("click", handleDeleteClick);
+      tbody.addEventListener("click", handleTableClick);
 
-      /* Init */
+      modalClose.addEventListener("click", closeModal);
+      modalCancel.addEventListener("click", closeModal);
+      modalSave.addEventListener("click", saveModal);
+      modalBackdrop.addEventListener("click", (e) => {
+        if (e.target === modalBackdrop) closeModal();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
       initTheme();
       initAdmin();
       initToggle();
       refresh();
+
+      /* NOTE: Your Apps Script must support:
+         - POST action=delete&callsign=...&actor=...
+         - POST action=update&callsign=...&name=...&role=...&specialization=...&actor=...
+         - POST add (no action) with callsign,name,role,specialization,actor
+         And log actions server-side.
+      */
     })();
   </script>
 </body>
