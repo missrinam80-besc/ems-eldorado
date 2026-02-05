@@ -5,24 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EMS Eldorado – Rooster</title>
 
-  <!--
-    BELANGRIJK (Apps Script API)
-    Deze index.html is gemaakt voor een Google Apps Script Web App met:
-      - GET  -> roster ophalen
-      - POST -> toevoegen
-      - POST -> verwijderen (action=delete&callsign=XXX)  ✅ (geen DELETE nodig, werkt beter met CORS)
-
-    ✅ Verwacht gedrag server-side:
-      - doGet(): return JSON array van actieve records
-      - doPost(e):
-          - als e.parameter.action === "delete" => zet active = FALSE voor callsign
-          - anders => voeg nieuwe record toe
-
-    Als je nog de oudere versie met doDelete() gebruikt: pas je Apps Script aan naar de POST-variant.
-  -->
-
   <style>
-    /* ========= Theme tokens ========= */
+    /* =========================
+       Page wrapper: make the embedded page fill available space
+       ========================= */
+    html, body{
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+    body{
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    /* =========================
+       Card: responsive width + adaptive height
+       - width: fills parent, capped for readability
+       - height: uses viewport; table area scrolls
+       ========================= */
     .ems-card{
       --card: #0f1318; --text:#e8edf2; --muted:#aab6c2;
       --line: rgba(255,255,255,.10); --line-strong: rgba(255,255,255,.18);
@@ -33,10 +38,29 @@
       --btn-bg: rgba(255,255,255,.06); --btn-border: rgba(255,255,255,.14);
       --danger: rgba(255,90,90,.35);
       --ok: rgba(110,255,185,.35);
-      background: var(--card); color: var(--text);
-      border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow);
-      overflow: hidden; max-width: 1100px; margin: 18px auto;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+
+      /* Adaptive sizing for embeds */
+      width: min(1100px, 100%);
+      height: 100svh;                /* mobile-safe viewport height */
+      max-height: 100svh;
+      display: flex;
+      flex-direction: column;
+
+      /* Keep padding from iframe edges */
+      margin: 0;
+    }
+
+    /* Add some breathing room when there is space (desktop) */
+    @media (min-width: 720px){
+      body{ padding: 18px; }
+      .ems-card{ height: calc(100svh - 36px); }
     }
 
     .ems-card[data-theme="light"]{
@@ -65,20 +89,42 @@
       }
     }
 
-    /* ========= Header & controls ========= */
-    .ems-card__header{ padding: 18px; border-bottom: 1px solid var(--line); background: var(--header-grad); }
-    .ems-header__top{ display:flex; gap:14px; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; }
+    /* =========================
+       Header / controls
+       ========================= */
+    .ems-card__header{
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--header-grad);
+      flex: 0 0 auto;
+    }
+    .ems-header__top{
+      display:flex; gap:14px;
+      justify-content:space-between; align-items:flex-start;
+      flex-wrap:wrap;
+    }
     .ems-card__title{ margin:0; font-size:18px; letter-spacing:.2px; }
     .ems-card__subtitle{ margin:6px 0 0; font-size:13px; color:var(--muted); }
 
-    .ems-controls{ margin-top:14px; display:grid; gap:12px; grid-template-columns: 1fr 260px auto; align-items:end; }
+    .ems-controls{
+      margin-top:14px;
+      display:grid; gap:12px;
+      grid-template-columns: 1fr 260px auto;
+      align-items:end;
+    }
     .ems-control{ min-width:0; }
     .ems-control--right{ display:flex; justify-content:flex-end; }
 
     .ems-label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
     .ems-input, .ems-select{
-      width:100%; background: var(--input-bg); color: var(--text);
-      border:1px solid var(--input-border); border-radius:10px; padding:10px 12px; outline:none;
+      width:100%;
+      background: var(--input-bg);
+      color: var(--text);
+      border:1px solid var(--input-border);
+      border-radius:10px;
+      padding:10px 12px;
+      outline:none;
+      box-sizing: border-box;
     }
     .ems-input::placeholder{ color:var(--muted); opacity:.85; }
     .ems-input:focus, .ems-select:focus{
@@ -87,42 +133,87 @@
     }
 
     .ems-btn{
-      background: var(--btn-bg); color: var(--text);
-      border:1px solid var(--btn-border); border-radius:10px;
-      padding:10px 14px; cursor:pointer; white-space:nowrap;
+      background: var(--btn-bg);
+      color: var(--text);
+      border:1px solid var(--btn-border);
+      border-radius:10px;
+      padding:10px 14px;
+      cursor:pointer;
+      white-space:nowrap;
     }
     .ems-btn:hover{ filter: brightness(1.05); }
     .ems-btn--primary{ border-color: var(--ok); }
     .ems-btn--danger{ border-color: var(--danger); }
 
-    .ems-meta{ margin-top:10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:12px; color: var(--muted); }
+    .ems-meta{
+      margin-top:10px;
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      font-size:12px; color: var(--muted);
+    }
     .ems-pill{
       display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px; border-radius: 999px;
-      border:1px solid var(--input-border); background: var(--input-bg);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--input-border);
+      background: var(--input-bg);
       color: var(--muted);
     }
 
     .ems-theme{ display:flex; flex-direction:column; gap:6px; min-width: 160px; }
     .ems-theme__label{ font-size:12px; color:var(--muted); }
 
-    /* ========= Add form ========= */
+    /* =========================
+       Add form
+       ========================= */
     .ems-form{ margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
     .ems-form__title{ margin:0 0 10px; font-size: 14px; color: var(--text); }
-    .ems-form__grid{ display:grid; gap:12px; grid-template-columns: 160px 1fr 220px 1fr auto; align-items:end; }
+    .ems-form__grid{
+      display:grid;
+      gap:12px;
+      grid-template-columns: 160px 1fr 220px 1fr auto;
+      align-items:end;
+    }
     .ems-hint{ grid-column: 1 / -1; margin: 0; font-size: 12px; color: var(--muted); }
     .ems-hint--error{ color: rgba(255,90,90,.9); }
     .ems-hint--ok{ color: rgba(110,255,185,.9); }
 
-    /* ========= Table ========= */
-    .ems-table-wrap{ overflow:auto; -webkit-overflow-scrolling:touch; max-height: 560px; }
-    .ems-table{ width:100%; border-collapse:separate; border-spacing:0; min-width: 920px; }
-    .ems-table thead th{
-      position:sticky; top:0; z-index:2; background: var(--thead);
-      color: var(--muted); text-transform:uppercase; font-size:11px; letter-spacing:.08em;
-      padding:12px 14px; border-bottom: 1px solid var(--line-strong); text-align:left; white-space:nowrap;
+    /* =========================
+       Table area: takes remaining height
+       ========================= */
+    .ems-table-wrap{
+      flex: 1 1 auto;              /* fill remaining height */
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      min-height: 180px;
     }
-    .ems-table tbody td{ padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:middle; }
+
+    .ems-table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      min-width: 920px;
+    }
+
+    .ems-table thead th{
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--thead);
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .08em;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line-strong);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .ems-table tbody td{
+      padding:12px 14px;
+      border-bottom:1px solid var(--line);
+      vertical-align:middle;
+    }
     .ems-table tbody tr:hover{ background: var(--hover); }
 
     .col-num{ width:110px; }
@@ -130,15 +221,23 @@
     .num{ font-variant-numeric: tabular-nums; opacity:.95; }
 
     .badge{
-      display:inline-flex; padding:6px 10px; border-radius:999px; font-size:12px;
-      border:1px solid var(--input-border); background: var(--input-bg); white-space:nowrap;
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid var(--input-border);
+      background: var(--input-bg);
+      white-space:nowrap;
     }
     .pill{
-      display:inline-flex; padding:6px 10px; border-radius:10px; font-size:12px;
-      border:1px solid var(--input-border); background: var(--input-bg);
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:10px;
+      font-size:12px;
+      border:1px solid var(--input-border);
+      background: var(--input-bg);
     }
 
-    /* Subtle role accents (border only; works in both themes) */
     .badge--ChiefofEMS    { border-color: rgba(255, 90, 90, .45); }
     .badge--DeputyChief   { border-color: rgba(255, 170, 70, .45); }
     .badge--Captain       { border-color: rgba(255, 230, 80, .45); }
@@ -148,8 +247,15 @@
     .badge--EMT           { border-color: rgba(140, 160, 190, .45); }
     .badge--Trainee       { border-color: rgba(180, 180, 180, .35); }
 
-    .ems-empty{ padding: 14px 18px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
-    .ems-loading{ padding: 14px 18px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+    /* Footer status blocks */
+    .ems-loading,
+    .ems-empty{
+      flex: 0 0 auto;
+      padding: 14px 18px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+    }
 
     @media (max-width: 980px){
       .ems-form__grid{ grid-template-columns: 160px 1fr; }
@@ -166,7 +272,7 @@
   </style>
 </head>
 
-<body style="margin:0; padding:0;">
+<body>
   <section class="ems-card" data-theme="auto" aria-label="EMS roster">
     <header class="ems-card__header">
       <div class="ems-header__top">
@@ -276,24 +382,15 @@
       /* =========================
          CONFIG — VUL HIER JE APPS SCRIPT WEB APP URL IN
          ========================= */
-      const API_URL = "https://script.google.com/macros/s/AKfycbxMnY2Mt3N1azKmrbNeu41c1cKOnYfyGzXaEH6Jn58plT1ajubxrb06ZZNCh6g17y5rjA/exec";
+      const API_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
-      /* Role order in filter dropdown */
       const ROLE_ORDER = [
-        "Chief of EMS",
-        "Deputy Chief",
-        "Captain",
-        "Lieutenant",
-        "Paramedic",
-        "Advanced EMT",
-        "EMT",
-        "Trainee"
+        "Chief of EMS","Deputy Chief","Captain","Lieutenant",
+        "Paramedic","Advanced EMT","EMT","Trainee"
       ];
 
-      /* Storage key for theme */
       const THEME_KEY = "ems-theme";
 
-      /* DOM refs */
       const root = document.querySelector(".ems-card");
       const tbody = document.getElementById("emsTbody");
       const loadingEl = document.getElementById("emsLoading");
@@ -313,76 +410,55 @@
       const hint = document.getElementById("emsHint");
       const statusEl = document.getElementById("emsStatus");
 
-      let staff = []; // current dataset
+      let staff = [];
 
-      function setStatus(text) {
-        statusEl.textContent = "Status: " + (text || "klaar");
-      }
+      function setStatus(text){ statusEl.textContent = "Status: " + (text || "klaar"); }
 
-      function setHint(message, type) {
-        hint.classList.remove("ems-hint--error", "ems-hint--ok");
+      function setHint(message, type){
+        hint.classList.remove("ems-hint--error","ems-hint--ok");
         if (type === "error") hint.classList.add("ems-hint--error");
         if (type === "ok") hint.classList.add("ems-hint--ok");
         hint.textContent = message || "";
       }
 
-      function normalize(str) {
-        return (str || "")
-          .toString()
-          .trim()
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
+      function normalize(str){
+        return (str || "").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
       }
 
-      function escapeHtml(value) {
+      function escapeHtml(value){
         return String(value ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+          .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
       }
 
-      function roleClass(role) {
-        return String(role || "").replace(/[^a-zA-Z0-9]/g, "");
-      }
+      function roleClass(role){ return String(role || "").replace(/[^a-zA-Z0-9]/g,""); }
 
-      function buildRoleFilterOptions() {
+      function buildRoleFilterOptions(){
         const roles = Array.from(new Set(staff.map(p => p.role).filter(Boolean)));
-
-        roles.sort((a, b) => {
-          const ia = ROLE_ORDER.indexOf(a);
-          const ib = ROLE_ORDER.indexOf(b);
-          const aKnown = ia !== -1;
-          const bKnown = ib !== -1;
-          if (aKnown && bKnown) return ia - ib;
+        roles.sort((a,b)=>{
+          const ia = ROLE_ORDER.indexOf(a), ib = ROLE_ORDER.indexOf(b);
+          const aKnown = ia !== -1, bKnown = ib !== -1;
+          if (aKnown && bKnown) return ia-ib;
           if (aKnown && !bKnown) return -1;
           if (!aKnown && bKnown) return 1;
           return a.localeCompare(b);
         });
 
         roleEl.innerHTML = '<option value="all" selected>Alle functies</option>';
-        roles.forEach(r => {
+        roles.forEach(r=>{
           const opt = document.createElement("option");
-          opt.value = r;
-          opt.textContent = r;
+          opt.value = r; opt.textContent = r;
           roleEl.appendChild(opt);
         });
       }
 
-      function renderTable() {
+      function renderTable(){
         tbody.innerHTML = "";
-
-        const sorted = [...staff].sort((a, b) => (Number(a.callsign) || 0) - (Number(b.callsign) || 0));
-
-        sorted.forEach(person => {
+        const sorted = [...staff].sort((a,b)=>(Number(a.callsign)||0)-(Number(b.callsign)||0));
+        sorted.forEach(person=>{
           const tr = document.createElement("tr");
-          tr.dataset.callsign = String(person.callsign);
-
           const specHtml = (person.specialization && String(person.specialization).trim().length)
-            ? `<span class="pill">${escapeHtml(person.specialization)}</span>`
-            : "-";
+            ? `<span class="pill">${escapeHtml(person.specialization)}</span>` : "-";
 
           tr.innerHTML = `
             <td class="num">${escapeHtml(person.callsign)}</td>
@@ -392,36 +468,32 @@
             </td>
             <td>${specHtml}</td>
             <td class="col-actions">
-              <button type="button"
-                class="ems-btn ems-btn--danger"
-                data-action="delete"
-                data-callsign="${escapeHtml(person.callsign)}"
-                aria-label="Verwijder ${escapeHtml(person.name)}"
-              >Verwijder</button>
-            </td>
-          `;
+              <button type="button" class="ems-btn ems-btn--danger"
+                data-action="delete" data-callsign="${escapeHtml(person.callsign)}">
+                Verwijder
+              </button>
+            </td>`;
           tbody.appendChild(tr);
         });
-
         applyFilters();
       }
 
-      function applyFilters() {
+      function applyFilters(){
         const q = normalize(searchEl.value);
         const role = roleEl.value;
 
         const rows = Array.from(tbody.querySelectorAll("tr"));
         let visibleCount = 0;
 
-        rows.forEach(row => {
+        rows.forEach(row=>{
           const rowText = normalize(row.innerText);
           const roleCell = row.querySelector('td[data-role]');
           const rowRole = roleCell ? roleCell.getAttribute("data-role") : "";
 
           const matchesRole = (role === "all") || (rowRole === role);
           const matchesSearch = !q || rowText.includes(q);
-
           const show = matchesRole && matchesSearch;
+
           row.hidden = !show;
           if (show) visibleCount++;
         });
@@ -430,71 +502,64 @@
         emptyEl.hidden = visibleCount !== 0;
       }
 
-      function resetAll() {
+      function resetAll(){
         searchEl.value = "";
         roleEl.value = "all";
         applyFilters();
         searchEl.focus();
       }
 
-      /* ========= API calls (CORS-friendly) ========= */
-
-      function toFormBody(obj) {
+      function toFormBody(obj){
         const params = new URLSearchParams();
-        Object.entries(obj).forEach(([k, v]) => params.append(k, String(v ?? "")));
+        Object.entries(obj).forEach(([k,v])=>params.append(k,String(v ?? "")));
         return params.toString();
       }
 
-      async function apiList() {
+      async function apiList(){
         if (!API_URL || API_URL.includes("PASTE_YOUR")) {
-          throw new Error("API_URL is niet ingevuld. Plak je Apps Script Web App URL in de index.html.");
+          throw new Error("API_URL is niet ingevuld.");
         }
-        const res = await fetch(API_URL, { method: "GET" });
+        const res = await fetch(API_URL, { method:"GET" });
         if (!res.ok) throw new Error("API GET faalde: " + res.status);
         return await res.json();
       }
 
-      async function apiAdd(person) {
-        const body = toFormBody(person); // simple request, less CORS pain
+      async function apiAdd(person){
         const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-          body
+          method:"POST",
+          headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+          body: toFormBody(person)
         });
         if (!res.ok) throw new Error("API POST (add) faalde: " + res.status);
-        return await res.json().catch(() => ({ success: true }));
+        return await res.json().catch(()=>({success:true}));
       }
 
-      async function apiDelete(callsign) {
-        const body = toFormBody({ action: "delete", callsign });
+      async function apiDelete(callsign){
         const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-          body
+          method:"POST",
+          headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+          body: toFormBody({ action:"delete", callsign })
         });
         if (!res.ok) throw new Error("API POST (delete) faalde: " + res.status);
-        return await res.json().catch(() => ({ success: true }));
+        return await res.json().catch(()=>({success:true}));
       }
 
-      async function refresh() {
+      async function refresh(){
         setHint("");
         setStatus("laden…");
         loadingEl.hidden = false;
         emptyEl.hidden = true;
 
-        try {
+        try{
           const data = await apiList();
-
-          // Accept either array of objects OR {rows:[...]} if you choose to wrap later
           staff = Array.isArray(data) ? data : (Array.isArray(data.rows) ? data.rows : []);
           buildRoleFilterOptions();
           renderTable();
-
           setStatus("klaar");
-        } catch (err) {
+        } catch(err){
           console.error(err);
           setStatus("fout");
-          setHint("Kon de roster niet laden. Check je API_URL en Apps Script deployment.", "error");
+          setHint("Kon de roster niet laden. Check API_URL en Apps Script deployment.", "error");
           staff = [];
           buildRoleFilterOptions();
           renderTable();
@@ -503,19 +568,15 @@
         }
       }
 
-      /* ========= Add / delete handlers ========= */
-
-      function validateAdd(callsign, name, role) {
+      function validateAdd(callsign,name,role){
         const cs = Number(callsign);
-        if (!Number.isFinite(cs) || cs <= 0) return "Roepnummer is ongeldig. Gebruik een positief nummer (bv. 250).";
-        const cleanName = String(name || "").trim();
-        if (!cleanName.length) return "Naam is verplicht.";
-        const cleanRole = String(role || "").trim();
-        if (!cleanRole.length) return "Functie is verplicht.";
+        if (!Number.isFinite(cs) || cs <= 0) return "Roepnummer is ongeldig (bv. 250).";
+        if (!String(name||"").trim()) return "Naam is verplicht.";
+        if (!String(role||"").trim()) return "Functie is verplicht.";
         return null;
       }
 
-      async function handleAdd(e) {
+      async function handleAdd(e){
         e.preventDefault();
         setHint("");
 
@@ -524,32 +585,31 @@
         const role = fRole.value;
         const specialization = fSpec.value;
 
-        const err = validateAdd(callsign, name, role);
+        const err = validateAdd(callsign,name,role);
         if (err) { setHint(err, "error"); return; }
 
-        // client-side duplicate check (still allow server to decide if needed)
         if (staff.some(p => Number(p.callsign) === Number(callsign))) {
-          setHint(`Roepnummer ${Number(callsign)} bestaat al. Verwijder eerst de bestaande entry of kies een ander roepnummer.`, "error");
+          setHint(`Roepnummer ${Number(callsign)} bestaat al.`, "error");
           return;
         }
 
-        try {
+        try{
           setStatus("toevoegen…");
           await apiAdd({ callsign, name, role, specialization });
           setHint(`Toegevoegd: ${String(name).trim()} (${Number(callsign)})`, "ok");
           form.reset();
           fCallsign.focus();
           await refresh();
-        } catch (err2) {
+        } catch(err2){
           console.error(err2);
           setStatus("fout");
-          setHint("Toevoegen mislukt. Check Apps Script rechten/deployment.", "error");
+          setHint("Toevoegen mislukt. Check Apps Script deployment.", "error");
         } finally {
           setStatus("klaar");
         }
       }
 
-      async function handleDeleteClick(e) {
+      async function handleDeleteClick(e){
         const btn = e.target.closest("button[data-action='delete']");
         if (!btn) return;
 
@@ -560,33 +620,37 @@
         const ok = confirm(`Verwijderen: ${name} (${callsign})?\n\nDit zet 'active' op FALSE in de Sheet.`);
         if (!ok) return;
 
-        try {
+        try{
           setStatus("verwijderen…");
           await apiDelete(callsign);
           setHint(`Verwijderd: ${name} (${callsign})`, "ok");
           await refresh();
-        } catch (err) {
+        } catch(err){
           console.error(err);
           setStatus("fout");
-          setHint("Verwijderen mislukt. Check Apps Script rechten/deployment.", "error");
+          setHint("Verwijderen mislukt. Check Apps Script deployment.", "error");
         } finally {
           setStatus("klaar");
         }
       }
 
-      /* ========= Theme ========= */
-      function setTheme(value) {
+      function setTheme(value){
         root.setAttribute("data-theme", value);
-        try { localStorage.setItem(THEME_KEY, value); } catch (e) {}
+        try { localStorage.setItem(THEME_KEY, value); } catch(e){}
       }
-      function initTheme() {
+      function initTheme(){
         let saved = "auto";
-        try { saved = localStorage.getItem(THEME_KEY) || "auto"; } catch (e) {}
+        try { saved = localStorage.getItem(THEME_KEY) || "auto"; } catch(e){}
         themeSelect.value = saved;
         root.setAttribute("data-theme", saved);
       }
 
-      /* ========= Events ========= */
+      /* Google Sites embed note:
+         Google Sites iframes have fixed height.
+         We fill 100svh inside the iframe, and the table scrolls internally.
+         Tip: in Sites, set embed height to "Large" or drag it taller.
+      */
+
       searchEl.addEventListener("input", applyFilters);
       roleEl.addEventListener("change", applyFilters);
       clearBtn.addEventListener("click", resetAll);
@@ -595,7 +659,6 @@
       form.addEventListener("submit", handleAdd);
       tbody.addEventListener("click", handleDeleteClick);
 
-      /* ========= Init ========= */
       initTheme();
       refresh();
     })();
