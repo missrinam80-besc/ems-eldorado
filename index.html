@@ -6,9 +6,6 @@
   <title>EMS Eldorado – Rooster</title>
 
   <style>
-    /* =========================
-       Page wrapper: make the embedded page fill available space
-       ========================= */
     html, body{
       height: 100%;
       width: 100%;
@@ -22,12 +19,8 @@
       justify-content: center;
       box-sizing: border-box;
     }
+    @media (min-width: 720px){ body{ padding: 18px; } }
 
-    /* =========================
-       Card: responsive width + adaptive height
-       - width: fills parent, capped for readability
-       - height: uses viewport; table area scrolls
-       ========================= */
     .ems-card{
       --card: #0f1318; --text:#e8edf2; --muted:#aab6c2;
       --line: rgba(255,255,255,.10); --line-strong: rgba(255,255,255,.18);
@@ -46,21 +39,16 @@
       box-shadow: var(--shadow);
       overflow: hidden;
 
-      /* Adaptive sizing for embeds */
       width: min(1100px, 100%);
-      height: 100svh;                /* mobile-safe viewport height */
+      height: 100svh;
       max-height: 100svh;
+
       display: flex;
       flex-direction: column;
-
-      /* Keep padding from iframe edges */
-      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-
-    /* Add some breathing room when there is space (desktop) */
     @media (min-width: 720px){
-      body{ padding: 18px; }
-      .ems-card{ height: calc(100svh - 36px); }
+      .ems-card{ height: calc(100svh - 36px); max-height: calc(100svh - 36px); }
     }
 
     .ems-card[data-theme="light"]{
@@ -74,7 +62,6 @@
       --danger: rgba(255,90,90,.35);
       --ok: rgba(34,197,94,.35);
     }
-
     @media (prefers-color-scheme: light){
       .ems-card[data-theme="auto"]{
         --card:#fff; --text:#111827; --muted:#5b6472;
@@ -89,9 +76,6 @@
       }
     }
 
-    /* =========================
-       Header / controls
-       ========================= */
     .ems-card__header{
       padding: 18px;
       border-bottom: 1px solid var(--line);
@@ -142,7 +126,7 @@
       white-space:nowrap;
     }
     .ems-btn:hover{ filter: brightness(1.05); }
-    .ems-btn--primary{ border-color: var(--ok); }
+    .ems-btn--primary{ border-color: var(--ok); min-width: 120px; }
     .ems-btn--danger{ border-color: var(--danger); }
 
     .ems-meta{
@@ -162,62 +146,69 @@
     .ems-theme{ display:flex; flex-direction:column; gap:6px; min-width: 160px; }
     .ems-theme__label{ font-size:12px; color:var(--muted); }
 
-    /* =========================
-       Add form
-       ========================= */
-    .ems-form{ margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
-    .ems-form__title{ margin:0 0 10px; font-size: 14px; color: var(--text); }
-.ems-form__grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  align-items:end;
-}
+    /* Admin */
+    .ems-admin{
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      max-width: 720px;
+      flex-wrap: wrap;
+    }
+    .ems-admin .ems-input{ flex: 1 1 220px; }
+    .ems-admin .ems-btn{ flex: 0 0 auto; }
 
-.ems-form__grid .ems-control{
-  flex: 1 1 220px;   /* elk veld minimaal 220px, anders wrapt hij */
-}
+    /* Read-only default */
+    body:not(.is-admin) .ems-admin{ display:none; }
+    body:not(.is-admin) .ems-form{ display:none; }
+    body:not(.is-admin) .col-actions{ display:none; }
+    body:not(.is-admin) th.col-actions{ display:none; }
 
-.ems-form__grid .ems-control:first-child{
-  flex: 0 1 160px;   /* roepnummer iets smaller */
-  min-width: 140px;
-}
+    /* Add form (collapsed) */
+    .ems-form{ margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .ems-form__toggle{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      font-size:13px;
+      border-radius:999px;
+      border:1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text);
+      cursor:pointer;
+    }
+    .ems-form__toggle:hover{ filter: brightness(1.05); }
+    .ems-form__title{ margin:12px 0 10px; font-size: 14px; color: var(--text); }
 
-.ems-form__grid .ems-control:nth-child(3){
-  flex: 1 1 240px;   /* functie iets breder */
-  min-width: 200px;
-}
+    .ems-form__grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:end;
+    }
+    .ems-form__grid .ems-control{ flex: 1 1 220px; }
+    .ems-form__grid .ems-control:first-child{ flex: 0 1 160px; min-width: 140px; }
+    .ems-form__grid .ems-control:nth-child(3){ flex: 1 1 240px; min-width: 200px; }
+    .ems-form__grid .ems-control--right{ flex: 0 0 auto; }
 
-.ems-form__grid .ems-control--right{
-  flex: 0 0 auto;    /* knop blijft “auto” */
-}
-
-.ems-btn--primary{
-  width: auto;
-  min-width: 120px;  /* voorkomt rare compressie */
-}
-
-    .ems-hint{ grid-column: 1 / -1; margin: 0; font-size: 12px; color: var(--muted); }
+    .ems-hint{ flex: 1 1 100%; margin: 0; font-size: 12px; color: var(--muted); }
     .ems-hint--error{ color: rgba(255,90,90,.9); }
     .ems-hint--ok{ color: rgba(110,255,185,.9); }
 
-    /* =========================
-       Table area: takes remaining height
-       ========================= */
+    /* Table */
     .ems-table-wrap{
-      flex: 1 1 auto;              /* fill remaining height */
+      flex: 1 1 auto;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       min-height: 180px;
     }
-
     .ems-table{
       width:100%;
       border-collapse:separate;
       border-spacing:0;
       min-width: 920px;
     }
-
     .ems-table thead th{
       position: sticky;
       top: 0;
@@ -232,7 +223,6 @@
       text-align: left;
       white-space: nowrap;
     }
-
     .ems-table tbody td{
       padding:12px 14px;
       border-bottom:1px solid var(--line);
@@ -271,7 +261,6 @@
     .badge--EMT           { border-color: rgba(140, 160, 190, .45); }
     .badge--Trainee       { border-color: rgba(180, 180, 180, .35); }
 
-    /* Footer status blocks */
     .ems-loading,
     .ems-empty{
       flex: 0 0 auto;
@@ -282,7 +271,6 @@
     }
 
     @media (max-width: 980px){
-      .ems-form__grid{ grid-template-columns: 160px 1fr; }
       .ems-controls{ grid-template-columns: 1fr 1fr; }
       .ems-control--right{ grid-column: 1 / -1; justify-content:flex-start; }
       .ems-table{ min-width: 820px; }
@@ -290,7 +278,6 @@
     @media (max-width: 520px){
       .ems-controls{ grid-template-columns: 1fr; }
       .ems-theme{ min-width: 0; width: 100%; }
-      .ems-form__grid{ grid-template-columns: 1fr; }
       .ems-table{ min-width: 760px; }
     }
   </style>
@@ -302,7 +289,7 @@
       <div class="ems-header__top">
         <div>
           <h2 class="ems-card__title">EMS Eldorado – Rooster</h2>
-          <p class="ems-card__subtitle">Centrale personeelslijst (Google Sheet). Beheer, zoek en filter.</p>
+          <p class="ems-card__subtitle">Centrale personeelslijst (Google Sheet). Zoek & filter. Beheer is enkel voor Chiefs.</p>
         </div>
 
         <div class="ems-theme">
@@ -313,6 +300,13 @@
             <option value="light">Light</option>
           </select>
         </div>
+      </div>
+
+      <!-- Admin (hidden for read-only) -->
+      <div class="ems-admin">
+        <input id="emsAdminKey" class="ems-input" placeholder="Admin key" />
+        <input id="emsAdminActor" class="ems-input" placeholder="Jouw naam (logging)" />
+        <button id="emsAdminBtn" class="ems-btn" type="button">Beheer-modus</button>
       </div>
 
       <div class="ems-controls" role="group" aria-label="Zoek en filter">
@@ -337,48 +331,54 @@
       <div class="ems-meta" aria-live="polite">
         <span class="ems-pill"><strong id="emsCount">0</strong>&nbsp;zichtbaar</span>
         <span class="ems-pill" id="emsStatus">Status: klaar</span>
+        <span class="ems-pill" id="emsMode">Modus: read-only</span>
       </div>
 
+      <!-- Add form (admin-only, collapsed) -->
       <div class="ems-form">
-        <h3 class="ems-form__title">Personeel toevoegen</h3>
+        <button id="emsToggleForm" class="ems-form__toggle" type="button">➕ Personeel toevoegen</button>
 
-        <form id="emsAddForm" class="ems-form__grid" autocomplete="off">
-          <div class="ems-control">
-            <label class="ems-label" for="fCallsign">Roepnummer</label>
-            <input id="fCallsign" class="ems-input" inputmode="numeric" placeholder="bv. 250" required />
-          </div>
+        <div id="emsFormWrap" hidden>
+          <h3 class="ems-form__title">Personeel toevoegen</h3>
 
-          <div class="ems-control">
-            <label class="ems-label" for="fName">Naam</label>
-            <input id="fName" class="ems-input" placeholder="Voornaam Achternaam" required />
-          </div>
+          <form id="emsAddForm" class="ems-form__grid" autocomplete="off">
+            <div class="ems-control">
+              <label class="ems-label" for="fCallsign">Roepnummer</label>
+              <input id="fCallsign" class="ems-input" inputmode="numeric" placeholder="bv. 250" required />
+            </div>
 
-          <div class="ems-control">
-            <label class="ems-label" for="fRole">Functie</label>
-            <select id="fRole" class="ems-select" required>
-              <option value="" disabled selected>Kies functie</option>
-              <option>Chief of EMS</option>
-              <option>Deputy Chief</option>
-              <option>Captain</option>
-              <option>Lieutenant</option>
-              <option>Paramedic</option>
-              <option>Advanced EMT</option>
-              <option>EMT</option>
-              <option>Trainee</option>
-            </select>
-          </div>
+            <div class="ems-control">
+              <label class="ems-label" for="fName">Naam</label>
+              <input id="fName" class="ems-input" placeholder="Voornaam Achternaam" required />
+            </div>
 
-          <div class="ems-control">
-            <label class="ems-label" for="fSpec">Specialisatie</label>
-            <input id="fSpec" class="ems-input" placeholder="bv. Psycholoog" />
-          </div>
+            <div class="ems-control">
+              <label class="ems-label" for="fRole">Functie</label>
+              <select id="fRole" class="ems-select" required>
+                <option value="" disabled selected>Kies functie</option>
+                <option>Chief of EMS</option>
+                <option>Deputy Chief</option>
+                <option>Captain</option>
+                <option>Lieutenant</option>
+                <option>Paramedic</option>
+                <option>Advanced EMT</option>
+                <option>EMT</option>
+                <option>Trainee</option>
+              </select>
+            </div>
 
-          <div class="ems-control ems-control--right">
-            <button class="ems-btn ems-btn--primary" type="submit">Toevoegen</button>
-          </div>
+            <div class="ems-control">
+              <label class="ems-label" for="fSpec">Specialisatie</label>
+              <input id="fSpec" class="ems-input" placeholder="bv. Psycholoog" />
+            </div>
 
-          <p class="ems-hint" id="emsHint" aria-live="polite"></p>
-        </form>
+            <div class="ems-control ems-control--right">
+              <button class="ems-btn ems-btn--primary" type="submit">Toevoegen</button>
+            </div>
+
+            <p class="ems-hint" id="emsHint" aria-live="polite"></p>
+          </form>
+        </div>
       </div>
     </header>
 
@@ -404,9 +404,21 @@
   <script>
     (function () {
       /* =========================
-         CONFIG — VUL HIER JE APPS SCRIPT WEB APP URL IN
+         CONFIG
          ========================= */
       const API_URL = "https://script.google.com/macros/s/AKfycbxMnY2Mt3N1azKmrbNeu41c1cKOnYfyGzXaEH6Jn58plT1ajubxrb06ZZNCh6g17y5rjA/exec";
+
+      /* Simple admin key mode (front-end). For stronger security: validate server-side. */
+      const ADMIN_KEY = "EMS-CHIEF-2026";
+
+      /* Auto admin via URL: ?admin=KEY
+         Optional: ?actor=Naam (wordt opgeslagen voor logging)
+         Na activatie wordt ?admin uit de URL verwijderd (history.replaceState).
+      */
+      const ADMIN_QUERY_PARAM = "admin";
+      const ADMIN_ACTOR_QUERY_PARAM = "actor";
+      const ADMIN_STORAGE_KEY = "ems-admin";
+      const ADMIN_ACTOR_KEY = "ems-admin-actor";
 
       const ROLE_ORDER = [
         "Chief of EMS","Deputy Chief","Captain","Lieutenant",
@@ -415,6 +427,7 @@
 
       const THEME_KEY = "ems-theme";
 
+      /* DOM refs */
       const root = document.querySelector(".ems-card");
       const tbody = document.getElementById("emsTbody");
       const loadingEl = document.getElementById("emsLoading");
@@ -426,17 +439,28 @@
       const countEl = document.getElementById("emsCount");
       const themeSelect = document.getElementById("emsThemeSelect");
 
+      const hint = document.getElementById("emsHint");
+      const statusEl = document.getElementById("emsStatus");
+      const modeEl = document.getElementById("emsMode");
+
+      const adminKeyInput = document.getElementById("emsAdminKey");
+      const adminActorInput = document.getElementById("emsAdminActor");
+      const adminBtn = document.getElementById("emsAdminBtn");
+
+      const toggleBtn = document.getElementById("emsToggleForm");
+      const formWrap  = document.getElementById("emsFormWrap");
+
       const form = document.getElementById("emsAddForm");
       const fCallsign = document.getElementById("fCallsign");
       const fName = document.getElementById("fName");
       const fRole = document.getElementById("fRole");
       const fSpec = document.getElementById("fSpec");
-      const hint = document.getElementById("emsHint");
-      const statusEl = document.getElementById("emsStatus");
 
       let staff = [];
+      let isAdmin = false;
 
       function setStatus(text){ statusEl.textContent = "Status: " + (text || "klaar"); }
+      function setMode(){ modeEl.textContent = "Modus: " + (isAdmin ? "beheer" : "read-only"); }
 
       function setHint(message, type){
         hint.classList.remove("ems-hint--error","ems-hint--ok");
@@ -456,6 +480,47 @@
       }
 
       function roleClass(role){ return String(role || "").replace(/[^a-zA-Z0-9]/g,""); }
+
+      function getActor(){
+        try { return localStorage.getItem(ADMIN_ACTOR_KEY) || ""; } catch(e){ return ""; }
+      }
+      function setActor(val){
+        try { localStorage.setItem(ADMIN_ACTOR_KEY, val || ""); } catch(e){}
+      }
+
+      function updateAdminUI(){
+        document.body.classList.toggle("is-admin", isAdmin);
+        setMode();
+        // keep the admin actor input in sync
+        if (adminActorInput) adminActorInput.value = getActor();
+
+        if (!isAdmin) {
+          formWrap.setAttribute("hidden","");
+          toggleBtn.textContent = "➕ Personeel toevoegen";
+        }
+      }
+
+      function tryAdminFromStorage(){
+        try { return localStorage.getItem(ADMIN_STORAGE_KEY) === "true"; } catch(e){ return false; }
+      }
+
+      function tryAutoAdminFromQuery(){
+        const params = new URLSearchParams(location.search);
+        const q = (params.get(ADMIN_QUERY_PARAM) || "").trim();
+
+        if (q && q === ADMIN_KEY) {
+          isAdmin = true;
+          try { localStorage.setItem(ADMIN_STORAGE_KEY, "true"); } catch(e){}
+
+          const actorQ = (params.get(ADMIN_ACTOR_QUERY_PARAM) || "").trim();
+          if (actorQ) setActor(actorQ);
+
+          // Remove admin key from URL after activation
+          params.delete(ADMIN_QUERY_PARAM);
+          const newUrl = location.pathname + (params.toString() ? "?" + params.toString() : "") + location.hash;
+          history.replaceState({}, "", newUrl);
+        }
+      }
 
       function buildRoleFilterOptions(){
         const roles = Array.from(new Set(staff.map(p => p.role).filter(Boolean)));
@@ -479,6 +544,7 @@
       function renderTable(){
         tbody.innerHTML = "";
         const sorted = [...staff].sort((a,b)=>(Number(a.callsign)||0)-(Number(b.callsign)||0));
+
         sorted.forEach(person=>{
           const tr = document.createElement("tr");
           const specHtml = (person.specialization && String(person.specialization).trim().length)
@@ -499,6 +565,7 @@
             </td>`;
           tbody.appendChild(tr);
         });
+
         applyFilters();
       }
 
@@ -516,8 +583,8 @@
 
           const matchesRole = (role === "all") || (rowRole === role);
           const matchesSearch = !q || rowText.includes(q);
-          const show = matchesRole && matchesSearch;
 
+          const show = matchesRole && matchesSearch;
           row.hidden = !show;
           if (show) visibleCount++;
         });
@@ -540,29 +607,29 @@
       }
 
       async function apiList(){
-        if (!API_URL || API_URL.includes("PASTE_YOUR")) {
-          throw new Error("API_URL is niet ingevuld.");
-        }
+        if (!API_URL || API_URL.includes("PASTE_YOUR")) throw new Error("API_URL is niet ingevuld.");
         const res = await fetch(API_URL, { method:"GET" });
         if (!res.ok) throw new Error("API GET faalde: " + res.status);
         return await res.json();
       }
 
       async function apiAdd(person){
+        const payload = { ...person, actor: getActor() };
         const res = await fetch(API_URL, {
           method:"POST",
           headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
-          body: toFormBody(person)
+          body: toFormBody(payload)
         });
         if (!res.ok) throw new Error("API POST (add) faalde: " + res.status);
         return await res.json().catch(()=>({success:true}));
       }
 
       async function apiDelete(callsign){
+        const payload = { action:"delete", callsign, actor: getActor() };
         const res = await fetch(API_URL, {
           method:"POST",
           headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
-          body: toFormBody({ action:"delete", callsign })
+          body: toFormBody(payload)
         });
         if (!res.ok) throw new Error("API POST (delete) faalde: " + res.status);
         return await res.json().catch(()=>({success:true}));
@@ -602,8 +669,12 @@
 
       async function handleAdd(e){
         e.preventDefault();
-        setHint("");
+        if (!isAdmin) { setHint("Read-only modus. Activeer beheer-modus.", "error"); return; }
 
+        const actor = (getActor() || "").trim();
+        if (!actor) { setHint("Vul je naam in voor logging (admin).", "error"); return; }
+
+        setHint("");
         const callsign = fCallsign.value;
         const name = fName.value;
         const role = fRole.value;
@@ -619,7 +690,9 @@
 
         try{
           setStatus("toevoegen…");
-          await apiAdd({ callsign, name, role, specialization });
+          const r = await apiAdd({ callsign, name, role, specialization });
+          if (r && r.success === false) throw new Error(r.error || "Server error");
+
           setHint(`Toegevoegd: ${String(name).trim()} (${Number(callsign)})`, "ok");
           form.reset();
           fCallsign.focus();
@@ -627,7 +700,7 @@
         } catch(err2){
           console.error(err2);
           setStatus("fout");
-          setHint("Toevoegen mislukt. Check Apps Script deployment.", "error");
+          setHint("Toevoegen mislukt. Check Apps Script deployment/log.", "error");
         } finally {
           setStatus("klaar");
         }
@@ -636,28 +709,85 @@
       async function handleDeleteClick(e){
         const btn = e.target.closest("button[data-action='delete']");
         if (!btn) return;
+        if (!isAdmin) return;
+
+        const actor = (getActor() || "").trim();
+        if (!actor) { setHint("Vul je naam in voor logging (admin).", "error"); return; }
 
         const callsign = btn.getAttribute("data-callsign");
         const row = btn.closest("tr");
         const name = row ? row.children[1]?.innerText : "";
 
-        const ok = confirm(`Verwijderen: ${name} (${callsign})?\n\nDit zet 'active' op FALSE in de Sheet.`);
+        const ok = confirm(`Verwijderen: ${name} (${callsign})?\n\nDit zet 'active' op FALSE in de Sheet en logt de actie.`);
         if (!ok) return;
 
         try{
           setStatus("verwijderen…");
-          await apiDelete(callsign);
+          const r = await apiDelete(callsign);
+          if (r && r.success === false) throw new Error(r.error || "Server error");
+
           setHint(`Verwijderd: ${name} (${callsign})`, "ok");
           await refresh();
         } catch(err){
           console.error(err);
           setStatus("fout");
-          setHint("Verwijderen mislukt. Check Apps Script deployment.", "error");
+          setHint("Verwijderen mislukt. Check Apps Script deployment/log.", "error");
         } finally {
           setStatus("klaar");
         }
       }
 
+      /* Toggle add form */
+      function initToggle(){
+        toggleBtn.addEventListener("click", () => {
+          const open = !formWrap.hasAttribute("hidden");
+          if (open) {
+            formWrap.setAttribute("hidden", "");
+            toggleBtn.textContent = "➕ Personeel toevoegen";
+          } else {
+            formWrap.removeAttribute("hidden");
+            toggleBtn.textContent = "➖ Formulier verbergen";
+            fCallsign.focus();
+          }
+        });
+      }
+
+      /* Admin activation */
+      function initAdmin(){
+        // Fill actor from storage
+        adminActorInput.value = getActor();
+
+        // Auto from query (?admin=KEY&actor=Name)
+        tryAutoAdminFromQuery();
+
+        // Or from localStorage flag
+        if (!isAdmin && tryAdminFromStorage()) isAdmin = true;
+
+        updateAdminUI();
+
+        adminBtn.addEventListener("click", () => {
+          const key = (adminKeyInput.value || "").trim();
+          const actor = (adminActorInput.value || "").trim();
+
+          if (!actor) { alert("Vul je naam in voor logging."); return; }
+
+          if (key === ADMIN_KEY) {
+            isAdmin = true;
+            setActor(actor);
+            try { localStorage.setItem(ADMIN_STORAGE_KEY, "true"); } catch(e){}
+            updateAdminUI();
+            alert("Beheer-modus actief.");
+          } else {
+            alert("Ongeldige admin key.");
+          }
+        });
+
+        // Persist actor changes even after activation (nice UX)
+        adminActorInput.addEventListener("change", () => setActor((adminActorInput.value || "").trim()));
+        adminActorInput.addEventListener("blur", () => setActor((adminActorInput.value || "").trim()));
+      }
+
+      /* Theme */
       function setTheme(value){
         root.setAttribute("data-theme", value);
         try { localStorage.setItem(THEME_KEY, value); } catch(e){}
@@ -669,12 +799,7 @@
         root.setAttribute("data-theme", saved);
       }
 
-      /* Google Sites embed note:
-         Google Sites iframes have fixed height.
-         We fill 100svh inside the iframe, and the table scrolls internally.
-         Tip: in Sites, set embed height to "Large" or drag it taller.
-      */
-
+      /* Events */
       searchEl.addEventListener("input", applyFilters);
       roleEl.addEventListener("change", applyFilters);
       clearBtn.addEventListener("click", resetAll);
@@ -683,11 +808,12 @@
       form.addEventListener("submit", handleAdd);
       tbody.addEventListener("click", handleDeleteClick);
 
+      /* Init */
       initTheme();
+      initAdmin();
+      initToggle();
       refresh();
     })();
   </script>
 </body>
 </html>
-
-
