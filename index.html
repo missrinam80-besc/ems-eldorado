@@ -686,8 +686,12 @@
           const r = await apiDelete(callsign);
           if (r && r.success === false) throw new Error(r.error || "Server error");
 
+          // Verwijder direct uit staff array en herlaad tabel voor onmiddellijke feedback
+          staff = staff.filter(p => Number(p.callsign) !== Number(callsign));
+          buildRoleFilterOptions();
+          renderTable();
+
           setHint(`Verwijderd: ${name} (${callsign})`, "ok");
-          await refresh();
         } catch(err){
           console.error(err);
           setStatus("fout");
@@ -730,7 +734,3 @@
   </script>
 </body>
 </html>
-
-
-
-
